@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -18,18 +19,19 @@ public class LendingRecord {
     @GeneratedValue(strategy = GenerationType.UUID) // auto-gen
     private String id;
 
-    @NotNull
-    private String bookId;
+    @ManyToOne
+    @JoinColumn(name = "book_id")
+    private Book book;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
     @NotNull
-    private String userId;
+    public LocalDate borrowStartDate;
 
     @NotNull
-    public Date borrowStartDate;
+    public LocalDate expectedBorrowEndDate;
 
-    @NotNull
-    public Date expectedBorrowEndDate;
-
-    public Date actualBorrowEndDate;
-
+    public LocalDate actualBorrowEndDate;
 }

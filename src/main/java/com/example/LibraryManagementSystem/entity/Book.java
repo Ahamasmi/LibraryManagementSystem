@@ -1,16 +1,12 @@
 package com.example.LibraryManagementSystem.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.*;
-import org.springframework.beans.factory.annotation.Value;
-
-import java.lang.annotation.ElementType;
 
 
 @Entity
-@Table(name = "book")
+@Table(name = "book", uniqueConstraints = @UniqueConstraint(columnNames = "isbn"))
 @Getter
 @Setter
 @NoArgsConstructor
@@ -36,6 +32,5 @@ public class Book {
     private Integer publishedYear;
 
     @NotNull
-    private boolean isAvailable;
-
+    private boolean available;
 }

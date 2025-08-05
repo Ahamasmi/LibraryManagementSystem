@@ -6,6 +6,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -28,7 +29,7 @@ public class User {
     @Column(unique = true, nullable = false)
     private String email;
 
-    private Date membershipStart;
+    private LocalDate membershipStart;
 
-    private Date membershipEnd;
+    private LocalDate membershipEnd;
 }
