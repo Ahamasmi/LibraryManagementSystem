@@ -10,9 +10,17 @@ import static com.example.LibraryManagementSystem.constants.BookServiceConstants
 
 public class PublishedYearValidator implements ConstraintValidator<ValidPublishedYear, Integer> {
 
+    private boolean isUpdate;
+
+    @Override
+    public void initialize(ValidPublishedYear constraintAnnotation) {
+        this.isUpdate = constraintAnnotation.isUpdate(); // Get the parameter value
+    }
+
     @Override
     public boolean isValid(Integer year, ConstraintValidatorContext context) {
-        if (year == null) return false;
+        if (year == null)
+            return isUpdate;//if it is an update, then null is allowed
 
         int currentYear = Year.now().getValue();
 

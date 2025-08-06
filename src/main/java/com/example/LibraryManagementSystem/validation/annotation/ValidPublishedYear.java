@@ -16,8 +16,8 @@ import static com.example.LibraryManagementSystem.constants.BookServiceConstants
 @Constraint(validatedBy = PublishedYearValidator.class)
 public @interface ValidPublishedYear {
     String message() default "Published year must be between " + MIN_VALID_PUBLISHED_YEAR + " and the current year";
-
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
+
+    boolean isUpdate() default false; //differentiate between create and update validations
 }

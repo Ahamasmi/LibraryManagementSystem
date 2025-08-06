@@ -32,11 +32,6 @@ public interface BookRepository extends JpaRepository<Book, String> {
             Pageable pageable
     );
 
-    @Query("SELECT b FROM Book b " +
-            "WHERE b.isDeleted = false " +
-            "AND  :id = b.id ")
-    Optional<Book> findByIdActive(String id);
-
     @Query("SELECT b FROM Book b WHERE b.isDeleted = false AND " +
             "(UPPER(b.title) LIKE UPPER(CONCAT('%', :query, '%')) " +
             "OR UPPER(b.author) LIKE UPPER(CONCAT('%', :query, '%')))")
@@ -52,4 +47,8 @@ public interface BookRepository extends JpaRepository<Book, String> {
             "WHERE b.id=:bookId " +
             "AND b.isDeleted = false ")
     Optional<Book> findById(String bookId);
+
+    @Query("SELECT b FROM Book b " +
+            "WHERE b.id=:bookId ")
+    Optional<Book> findByIdAllBooks(String bookId);
 }

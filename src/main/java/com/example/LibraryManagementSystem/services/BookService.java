@@ -44,7 +44,7 @@ public class BookService {
     }
 
     public BookResponse updateBook(String id, BookUpdateRequest bookUpdateRequest) {
-        Book existingBook = bookRepository.findByIdActive(id)
+        Book existingBook = bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Book not found"));
 
         // check for duplicate ISBN
@@ -66,14 +66,14 @@ public class BookService {
     }
 
     public void deleteBook(String id) throws BadRequestException {
-        Book book = bookRepository.findByIdActive(id)
+        Book book = bookRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found or already deleted"));
         book.setDeleted(true);
         bookRepository.save(book);
     }
 
     public void permaDeleteBook(String id) throws BadRequestException {
-        Book book = bookRepository.findById(id)
+        Book book = bookRepository.findByIdAllBooks(id)
                 .orElseThrow(() -> new IllegalArgumentException("Book not found!"));
         bookRepository.delete(book);
     }
