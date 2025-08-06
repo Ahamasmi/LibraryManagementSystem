@@ -1,7 +1,10 @@
 package com.example.LibraryManagementSystem.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 
@@ -33,4 +36,8 @@ public class Book {
 
     @NotNull
     private boolean available;
+
+    @NotNull
+    @Column(name="is_deleted")
+    private boolean isDeleted;
 }

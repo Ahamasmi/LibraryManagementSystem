@@ -1,13 +1,12 @@
 package com.example.LibraryManagementSystem.controller;
 
-import com.example.LibraryManagementSystem.dto.BookCreateRequest;
+import com.example.LibraryManagementSystem.dto.*;
 import com.example.LibraryManagementSystem.services.BookService;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,15 +24,65 @@ public class LibraryContoller {
     }
 
     @PostMapping("/createNewBook")
-    public ResponseEntity<String> ping(@Valid @RequestBody BookCreateRequest bookCreateRequest){
+    public ResponseEntity<Object> createNewBook(@Valid @RequestBody BookCreateRequest bookCreateRequest){
         LOGGER.info("entering create api");
         try {
-            String bookId = bookService.addNewBook(bookCreateRequest);
-            return ResponseEntity.status(HttpStatus.CREATED).body(bookId);
+            BookResponse newBook = bookService.addNewBook(bookCreateRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(newBook);
         }catch (IllegalArgumentException e){
-            return ResponseEntity.badRequest().body(e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
         }catch (Exception e){
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @PostMapping("/getBooks")
+    public ResponseEntity<Object> getBooks(@Valid @RequestBody BookFetchRequest bookFetchRequest){
+        LOGGER.info("entering get books api");
+        try {
+            var books = bookService.getBooks(bookFetchRequest);
+            return ResponseEntity.status(HttpStatus.CREATED).body(books);
+        }catch (Exception e){
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PutMapping("/book/{id}")
+    public ResponseEntity<Object> updateBook(
+            @PathVariable String id,
+            @RequestBody BookUpdateRequest request) {
+
+        try {
+            BookResponse response = bookService.updateBook(id, request);
+            return ResponseEntity.ok(response);
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Unexpected error");
+        }
+    }
+
+    @DeleteMapping("/book/{id}")
+    public ResponseEntity<?> deleteBook(@PathVariable String id) {
+        try {
+            bookService.deleteBook(id);
+            return ResponseEntity.ok(String.format("Book with bookId: [%s] deleted successfully",id));
+        } catch (IllegalArgumentException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                    .body(e.getMessage());
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Unexpected error occurred");
+        }
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchBooks(
+            @RequestParam BookSearchRequest bookSearchRequest
+    ) {
+        Page<BookResponse> results = bookService.searchBooks(bookSearchRequest);
+        return ResponseEntity.ok(results);
     }
 }
