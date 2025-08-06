@@ -1,6 +1,6 @@
 package com.example.LibraryManagementSystem.controller;
 
-import com.example.LibraryManagementSystem.dto.*;
+import com.example.LibraryManagementSystem.dto.book.*;
 import com.example.LibraryManagementSystem.services.BookService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -14,35 +14,36 @@ import org.springframework.web.bind.annotation.*;
 @RestController("/libraryinventory")
 public class LibraryContoller {
 
+    public static final Logger LOGGER = LoggerFactory.getLogger(LibraryContoller.class);
     @Autowired
     private BookService bookService;
-    public static final Logger LOGGER = LoggerFactory.getLogger(LibraryContoller.class);
+
     @GetMapping("/ping")
-    public ResponseEntity<String> ping(){
-        LOGGER.info("entering ping api");
+    public ResponseEntity<String> ping() {
+        LOGGER.info("Entering ping API");
         return ResponseEntity.ok("pong");
     }
 
     @PostMapping("/createNewBook")
-    public ResponseEntity<Object> createNewBook(@Valid @RequestBody BookCreateRequest bookCreateRequest){
-        LOGGER.info("entering create api");
+    public ResponseEntity<Object> createNewBook(@RequestBody @Valid BookCreateRequest bookCreateRequest) {
+        LOGGER.info("Entering createNewBook API");
         try {
             BookResponse newBook = bookService.addNewBook(bookCreateRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(newBook);
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
 
     @PostMapping("/getBooks")
-    public ResponseEntity<Object> getBooks(@Valid @RequestBody BookFetchRequest bookFetchRequest){
-        LOGGER.info("entering get books api");
+    public ResponseEntity<Object> getBooks(@Valid @RequestBody BookFetchRequest bookFetchRequest) {
+        LOGGER.info("Entering getBooks API");
         try {
             var books = bookService.getBooks(bookFetchRequest);
             return ResponseEntity.status(HttpStatus.CREATED).body(books);
-        }catch (Exception e){
+        } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
         }
     }
@@ -50,8 +51,8 @@ public class LibraryContoller {
     @PutMapping("/book/{id}")
     public ResponseEntity<Object> updateBook(
             @PathVariable String id,
-            @RequestBody BookUpdateRequest request) {
-
+            @Valid @RequestBody BookUpdateRequest request) {
+        LOGGER.info("Entering updateBook API");
         try {
             BookResponse response = bookService.updateBook(id, request);
             return ResponseEntity.ok(response);
@@ -66,9 +67,10 @@ public class LibraryContoller {
 
     @DeleteMapping("/book/{id}")
     public ResponseEntity<?> deleteBook(@PathVariable String id) {
+        LOGGER.info("Entering deleteBook API");
         try {
             bookService.deleteBook(id);
-            return ResponseEntity.ok(String.format("Book with bookId: [%s] deleted successfully",id));
+            return ResponseEntity.ok(String.format("Book with bookId: [%s] deleted successfully", id));
         } catch (IllegalArgumentException e) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(e.getMessage());
@@ -82,6 +84,7 @@ public class LibraryContoller {
     public ResponseEntity<?> searchBooks(
             @RequestParam BookSearchRequest bookSearchRequest
     ) {
+        LOGGER.info("Entering searchBooks API");
         Page<BookResponse> results = bookService.searchBooks(bookSearchRequest);
         return ResponseEntity.ok(results);
     }

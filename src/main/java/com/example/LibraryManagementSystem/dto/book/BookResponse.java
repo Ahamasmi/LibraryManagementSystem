@@ -1,4 +1,4 @@
-package com.example.LibraryManagementSystem.dto;
+package com.example.LibraryManagementSystem.dto.book;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -6,10 +6,12 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class BookUpdateRequest {
+public class BookResponse {
+
+    private String id;
 
     private String title;
 
@@ -19,5 +21,5 @@ public class BookUpdateRequest {
 
     private Integer publishedYear;
 
-    private Boolean available;
+    private boolean available;
 }

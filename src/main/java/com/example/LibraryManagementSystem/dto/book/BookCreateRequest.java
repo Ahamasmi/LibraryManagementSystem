@@ -1,7 +1,6 @@
-package com.example.LibraryManagementSystem.dto;
+package com.example.LibraryManagementSystem.dto.book;
 
-import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import com.example.LibraryManagementSystem.validation.annotation.ValidPublishedYear;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -24,9 +23,8 @@ public class BookCreateRequest {
     @NotBlank
     private String isbn;
 
-    @Min(1600)
-    //todo: improve this validation
-    @Max(2025)
+    @NotNull
+    @ValidPublishedYear
     private Integer publishedYear;
 
     @NotNull

@@ -1,16 +1,19 @@
-package com.example.LibraryManagementSystem.dto;
+package com.example.LibraryManagementSystem.dto.book;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BookSearchRequest {
-    String query;
+public class BookFetchRequest {
+    private List<String> authors;
+    private List<Integer> publishedYears;
 
     // Pagination parameters
     private Integer page;

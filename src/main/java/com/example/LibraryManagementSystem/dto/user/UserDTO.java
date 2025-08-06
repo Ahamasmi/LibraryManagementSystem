@@ -1,31 +1,26 @@
-package com.example.LibraryManagementSystem.entity;
+package com.example.LibraryManagementSystem.dto.user;
 
-
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
-@Entity
-@Table(name = "library_user")
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class User {
+public class UserDTO {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.UUID) // auto-gen
-    private String id;
+    private String userId;
 
     @NotBlank(message = "Name can't be blank!")
     private String name;
 
     @Email(message = "Email must be valid!")
-    @Column(unique = true, nullable = false)
     private String email;
 
     private LocalDate membershipStart;

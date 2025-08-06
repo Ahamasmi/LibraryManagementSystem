@@ -6,11 +6,12 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
 
-
+@Repository
 public interface BookRepository extends JpaRepository<Book, String> {
     @Query("SELECT COUNT(b) > 0 FROM Book b " +
             "WHERE :isbn = b.isbn")
@@ -44,5 +45,11 @@ public interface BookRepository extends JpaRepository<Book, String> {
     @Query("SELECT b FROM Book b " +
             "WHERE b.isDeleted = true AND " +
             "b.id=:id ")
-    public Optional<Book> findDeletedBookById(String id);
+    Optional<Book> findDeletedBookById(String id);
+
+    @Override
+    @Query("SELECT b FROM Book b " +
+            "WHERE b.id=:bookId " +
+            "AND b.isDeleted = false ")
+    Optional<Book> findById(String bookId);
 }

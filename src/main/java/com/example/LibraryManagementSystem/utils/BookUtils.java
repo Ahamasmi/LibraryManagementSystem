@@ -1,6 +1,6 @@
 package com.example.LibraryManagementSystem.utils;
 
-import com.example.LibraryManagementSystem.dto.BookResponse;
+import com.example.LibraryManagementSystem.dto.book.BookResponse;
 import com.example.LibraryManagementSystem.entity.Book;
 
 public class BookUtils {

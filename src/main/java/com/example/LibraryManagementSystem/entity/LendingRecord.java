@@ -5,7 +5,6 @@ import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "lending_history")
@@ -15,23 +14,18 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class LendingRecord {
+    @NotNull
+    public LocalDate borrowStartDate;
+    @NotNull
+    public LocalDate expectedBorrowEndDate;
+    public LocalDate actualBorrowEndDate;
     @Id
     @GeneratedValue(strategy = GenerationType.UUID) // auto-gen
     private String id;
-
     @ManyToOne
     @JoinColumn(name = "book_id")
     private Book book;
-
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
-
-    @NotNull
-    public LocalDate borrowStartDate;
-
-    @NotNull
-    public LocalDate expectedBorrowEndDate;
-
-    public LocalDate actualBorrowEndDate;
 }
